@@ -1,0 +1,13 @@
+﻿  main.cpp
+c:\users\zaboy\desktop\chess\c++\pieces.h(156): error C2804: binary 'operator ==' has too many parameters
+c:\users\zaboy\desktop\chess\c++\pieces.h(156): error C2333: 'Pawn::operator ==': error in function declaration; skipping function body
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include\vector(15): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+c:\users\zaboy\desktop\chess\c++\player.h(37): error C2143: syntax error: missing ';' before '<'
+c:\users\zaboy\desktop\chess\c++\player.h(37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zaboy\desktop\chess\c++\player.h(37): error C2238: unexpected token(s) preceding ';'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\assert.h(14): error C2059: syntax error: 'string'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\assert.h(14): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+c:\users\zaboy\desktop\chess\c++\board.h(111): error C2804: binary 'operator <<' has too many parameters
+c:\users\zaboy\desktop\chess\c++\board.h(111): error C2333: 'Pawn::operator <<': error in function declaration; skipping function body
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\include\iostream(13): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+c:\users\zaboy\desktop\chess\c++\pieces.h(62): fatal error C1075: the left brace '{' was unmatched at the end of the file
