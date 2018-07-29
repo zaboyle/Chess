@@ -69,31 +69,31 @@ public:
 		//create the pieces to start with
 
 		//black pieces at top of board
-		boardPieces[0][8] = new Rook("a8");
-		boardPieces[1][8] = new Knight("b8");
-		boardPieces[2][8] = new Bishop("c8");
-		boardPieces[3][8] = new Queen("d8");
-		boardPieces[4][8] = new King("e8");
-		boardPieces[5][8] = new Bishop("f8");
-		boardPieces[6][8] = new Knight("g8");
-		boardPieces[7][8] = new Rook("h8");
+		boardPieces[0][8] = new Rook("a8", "black");
+		boardPieces[1][8] = new Knight("b8", "black");
+		boardPieces[2][8] = new Bishop("c8", "black");
+		boardPieces[3][8] = new Queen("d8", "black");
+		boardPieces[4][8] = new King("e8", "black");
+		boardPieces[5][8] = new Bishop("f8", "black");
+		boardPieces[6][8] = new Knight("g8", "black");
+		boardPieces[7][8] = new Rook("h8", "black");
 		//row of pawns
 		for (int i = 0; i < 8; ++i) {
-			boardPieces[i][7] = new Pawn((i + 97) + "7");
+			boardPieces[i][7] = new Pawn((i + 97) + "7", "black");
 		}
 
 		//white pieces at bottom
-		boardPieces[0][0] = new Rook("a1");
-		boardPieces[1][0] = new Knight("b1");
-		boardPieces[2][0] = new Bishop("c1");
-		boardPieces[3][0] = new Queen("d1");
-		boardPieces[4][0] = new King("e1");
-		boardPieces[5][0] = new Bishop("f1");
-		boardPieces[6][0] = new Knight("g1");
-		boardPieces[7][0] = new Rook("h1");
+		boardPieces[0][0] = new Rook("a1", "white");
+		boardPieces[1][0] = new Knight("b1", "white");
+		boardPieces[2][0] = new Bishop("c1", "white");
+		boardPieces[3][0] = new Queen("d1", "white");
+		boardPieces[4][0] = new King("e1", "white");
+		boardPieces[5][0] = new Bishop("f1", "white");
+		boardPieces[6][0] = new Knight("g1", "white");
+		boardPieces[7][0] = new Rook("h1", "white");
 		//row of pawns
 		for (int i = 0; i < 8; ++i) {
-			boardPieces[i][2] = new Pawn((i + 97) + "2");
+			boardPieces[i][2] = new Pawn((i + 97) + "2", "white");
 		}
 		//...
 
@@ -135,6 +135,12 @@ public:
 
 	}
 
+
+	bool isPieceAtLoc(std::pair<char, int> destination) {
+		if (boardPieces[int(destination.first - 97)][destination.second] != nullptr) { return true; }
+		return false;
+	}
+
 	//board ctor with fen string? or csv file (would be easier)
 
 	//returns true if the move for the given piece is in the bounds of the board
@@ -149,14 +155,14 @@ public:
 		return false;
 	}
 
-	bool validTake(Piece* piece, std::string destination) {
-		//returns true if the piece in question can take an opponent's piece at destination
-	}
-
 	//returns true if the user-inputted destination is a valid place for the piece to move
 	//to and false otherwise. Includes taking pieces
-	bool legalMove(Piece* piece, std::string destination) { 
-		if (!inBounds(destination) || !(piece->validMove(destination))) { return false; }
+	bool legalMove(Piece* piece, std::string destination) {
+
+		std::pair<char, int> loc(destination[0], destination[1]);
+
+		if (!inBounds(destination) || !(piece->validMove(destination) { return false; }
+		if (isPieceAtLoc(loc) && !piece->validTake(destination) { return false; }
 		//if the piece can perform the move, return true
 		return true;
 	}
@@ -164,7 +170,7 @@ public:
 	//moves the piece to the given destination
 	//make sure to update the nextPlayerToMove pointer
 	void movePiece(Player* player, Piece* piece, std::string destination) {
-		assert(legalMove(piece, destination));
+		assert(this->legalMove(piece, destination);
 		//
 		player->makeMove(piece, destination);
 	}
