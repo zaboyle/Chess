@@ -62,15 +62,16 @@ public:
 		setTeam(team_in);
 	}
 
+	//REQUIRES: piece is not a nullptr
 	//returns the pointer to the piece that is
 	//trying to be found in the given player's pieces vector
-	std::iterator<Piece*> find(Piece* piece) override {
+	Piece* find(Piece* piece) override {
 		for (int i = 0; i < int(pieces.size()); ++i) {
 			//if the locations are equal, this is the piece
 			//you're looking for since there can only be
 			//one piece at a location at a time
 			if (piece->getLocation() == pieces[i]->getLocation()) {
-				return std::iterator<Piece*> pieces[i];
+				return pieces[i];
 			}
 		}
 		return nullptr;
