@@ -183,7 +183,21 @@ class Knight : public Piece {
 public:
 	Knight(std::string location_in, std::string team_in) : Piece("KN", 3, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override { 
+	bool validMove(const std::string destination, std::string team) override {
+		std::pair<char, int> loc = getLocation();
+
+		//all ways to move in an "L" shape on the board
+		if(loc.first == (destination[0] - 1) && loc.second == (destination[1] + 2) ||
+			loc.first == (destination[0] - 1) && loc.second == (destination[1] - 2) ||
+			loc.first == (destination[0] + 1) && loc.second == (destination[1] + 2) ||
+			loc.first == (destination[0] + 1) && loc.second == (destination[1] - 2) ||
+			loc.first == (destination[0] - 2) && loc.second == (destination[1] + 1) || 
+			loc.first == (destination[0] - 2) && loc.second == (destination[1] - 1) ||
+			loc.first == (destination[0] + 2) && loc.second == (destination[1] + 1) ||
+			loc.first == (destination[0] + 2) && loc.second == (destination[1] - 1)
+			) {
+			return true;
+		}
 		return false;
 	}
 
@@ -195,7 +209,9 @@ class Bishop : public Piece {
 public:
 	Bishop(std::string location_in, std::string team_in) : Piece("B", 3, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override { 
+	bool validMove(const std::string destination, std::string team) override {
+		std::pair<char, int> loc = getLocation();
+		if ((destination[1] - loc.second) == (int(destination[0]) - int(loc.first))) { return true; }
 		return false;
 	}
 
@@ -207,7 +223,9 @@ class Rook : public Piece {
 public:
 	Rook(std::string location_in, std::string team_in) : Piece("R", 5, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override { 
+	bool validMove(const std::string destination, std::string team) override {
+		std::pair<char, int> loc = getLocation();
+		if ((destination[1] == loc.second) || (destination[0] == loc.first)) { return true; }
 		return false;
 	}
 
@@ -220,6 +238,9 @@ public:
 	Queen(std::string location_in, std::string team_in) : Piece("Q", 9, location_in, team_in) {}
 
 	bool validMove(const std::string destination, std::string team) override { 
+		std::pair<char, int> loc = getLocation();
+		if ((destination[1] - loc.second) == (int(destination[0]) - int(loc.first))) { return true; }
+		if ((destination[1] == loc.second) || (destination[0] == loc.first)) { return true; }
 		return false;
 	}
 
@@ -232,6 +253,19 @@ public:
 	King(std::string location_in, std::string team_in) : Piece("K", 0, location_in, team_in) {}
 
 	bool validMove(const std::string destination, std::string team) override { 
+		std::pair<char, int> loc = getLocation();
+
+		//4 diagonal spaces
+		//2 vertical spaces
+		//2 horizontal spaces
+		if ((loc.first == (destination[0] - 1) && loc.second == (destination[1] - 1)) ||
+			(loc.first == (destination[0] - 1) && loc.second == (destination[1] + 1)) ||
+			(loc.first == (destination[0] + 1) && loc.second == (destination[1] - 1)) ||
+			(loc.first == (destination[0] + 1) && loc.second == (destination[1] + 1)) ||
+			loc.first == (destination[0] + 1) || loc.first == (destination[0] - 1) ||
+			loc.second == (destination[1] + 1) || loc.second == (destination[1] - 1)) {
+			return true;
+		}
 		return false;
 	}
 

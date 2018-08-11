@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "pieces.h"
-#include <string>
+//#include <string>
 #include <vector>
 /*
 ////MAKE 'PLAYER' ADT////
