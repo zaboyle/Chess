@@ -1,7 +1,7 @@
+#include<iostream>
 #include "board.h"
-#include "pieces.h"
-#include "player.h"
-#include <iostream>
+//#include "pieces.h"
+//#include "player.h"
 /*
 CHESS
 
@@ -149,11 +149,11 @@ int main() {
 		Player* player1 = players.first;
 		Player* player2 = players.second;
 		Board gameBoard = Board(player1, player2);
-	}
+	} 
 	else {
 		//do something w/ loading games
 		//implement loading stuff
+		std::cout << "working on it";
 	}
-
 	return 0;
 }
