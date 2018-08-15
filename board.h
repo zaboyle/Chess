@@ -4,8 +4,9 @@
 //#include "pieces.h"
 //#include <vector>
 //not sure about this one
-#include "player.h"
 #include <cassert>
+#include "player.h"
+
 
 
 /*
@@ -63,6 +64,7 @@ each square's piece also needs to have a "team" associated with it
 
 
 class Board {
+
 public:
 
 	//board ctor
@@ -71,7 +73,7 @@ public:
 		//something about static/nonstatic data members
 		player1 = player1_in;
 		player2 = player2_in;
-		boardPieces = new Piece*[8][8];
+		//no need to do anything with array since it will be filled with junk values??
 		nextPlayerToMove = nullptr;
 		//create the pieces to start with
 
@@ -103,6 +105,13 @@ public:
 			boardPieces[i][2] = new Pawn((('a' + i) + "2"), "white");
 		}
 		//...
+
+		/*NEED TO INITIALIZE THE OTHER SPOTS TO NULL POINTERS*/
+		for (int row = 0; row < 8; ++row) {
+			for (int col = 2; col < 6; ++col) {
+				boardPieces[row][col] = nullptr;
+			}
+		}
 
 		//push back all the board pieces to player1 and player2's vectors
 		//depending on is they are black or white
@@ -167,12 +176,12 @@ public:
 
 	//returns true if the user-inputted destination is a valid place for the piece to move
 	//to and false otherwise. Includes taking pieces
-	bool legalMove(Piece* piece, std::string destination) {
+	bool legalMove(Player* player, Piece* piece, std::string destination) {
 
 		std::pair<char, int> loc(destination[0], destination[1]);
 
-		if (!inBounds(destination) || !(piece->validMove(destination))) { return false; }
-		if (isPieceAtLoc(loc) && !piece->validTake(destination) { return false; }
+		if (!inBounds(destination) || !(piece->validMove(destination, piece->getTeam()))) { return false; }
+		if (isPieceAtLoc(loc) && !piece->validTake(destination, piece->getTeam())) { return false; }
 		//if the piece can perform the move, return true
 		return true;
 	}
@@ -180,13 +189,32 @@ public:
 	//moves the piece to the given destination
 	//make sure to update the nextPlayerToMove pointer
 	void movePiece(Player* player, Piece* piece, std::string destination) {
-		assert(this.legalMove(piece, destination);
+		assert(this->legalMove(player, piece, destination));
 		//
 		player->makeMove(piece, destination);
 	}
 
 	//returns true if the player is in check. false otherwise
-	bool isInCheck(Player* player_in) { return false; }
+	bool isInCheck(Player* player_in) {
+		//need to find king destination here
+		Piece* king = player_in->getKing();
+		//need to do some fancy stuff here since the location is a pair
+		std::pair<char, int> location = king->getLocation();
+		std::string loc = location.first + std::to_string(location.second);
+		//make sure it actually concatenated string, not just added ASCII values
+		assert(loc.length == 2);
+
+		Player* otherPlayer = nullptr;
+		if (player_in == player1) { otherPlayer = player2; }
+		else { otherPlayer = player1; }
+
+		for (auto iter = (otherPlayer->pieces).begin(); iter < (otherPlayer->pieces).end(); ++iter) {
+			if ((*iter)->validTake(loc, (*iter)->getTeam())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	//returns true if the questioned player has been checkmated
 	bool isCheckmate(Player* player_in) { return false; }
@@ -201,13 +229,23 @@ public:
 		return boardPieces[row][col]->getAbbr();
 	}
 
-private:
-	//the board is a 2D array of pieces. array points to the pieces.
-	//if no piece is there, the pointer is a nullptr
-	Piece* boardPieces[8][8];
-	Player* player1;
-	Player* player2;
-	Player* nextPlayerToMove;
+	Player* getPlayer1() {
+		return player1;
+	}
+
+	Player* getPlayer2() {
+		return player2;
+	}
+
+	private:
+		//the board is a 2D array of pieces. array points to the pieces.
+		//if no piece is there, the pointer is a nullptr
+		Piece * boardPieces[8][8];
+		Player* player1;
+		Player* player2;
+		Player* nextPlayerToMove;
+
+
 };
 
 //prints the board to the console in the given format
@@ -225,6 +263,4 @@ std::ostream & operator<<(std::ostream &os, const Board &board) {
 	os << "   a    b    c    d    e    f    g    h" << std::endl << std::endl;
 	return os;
 }
-
-
 #endif

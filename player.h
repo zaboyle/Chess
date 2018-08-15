@@ -16,8 +16,19 @@ which of the opponent's pieces they've taken (optional)
 - polymorphic for human or cpu
 */
 class Player {
+
+	friend class Board;
+
 public:
+
+	//MAY NOT NEED THIS//
 	virtual Piece* find(Piece* piece) = 0;
+
+	Piece* getKing() {
+		for (auto iter = pieces.begin(); iter < pieces.end(); ++iter) {
+			if ((*iter)->getAbbr() == "K") { return *iter; }
+		}
+	}
 
 	virtual void makeMove(Piece* piece, std::string destination) = 0;
 
@@ -44,6 +55,7 @@ public:
 	virtual std::string getName() {
 		return name;
 	}
+
 
 protected:
 	std::vector<Piece*> pieces;

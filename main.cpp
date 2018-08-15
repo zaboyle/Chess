@@ -32,6 +32,12 @@ public:
 		if (player1_in->getTeam == "white") { upNext = player1_in; }
 		else if(player2_in->getTeam == "white"){ upNext = player2_in; }
 	}
+	
+	//game is over when one player is in checkmate
+	bool over() {
+		return gameBoard.isCheckmate(gameBoard.getPlayer1) 
+			|| gameBoard.isCheckmate(gameBoard.getPlayer2);
+	}
 
 private:
 	Board gameBoard;
