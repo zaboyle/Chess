@@ -149,7 +149,7 @@ public:
 	//...
 
 	bool isPieceAtLoc(std::pair<char, int> destination) {
-		if ((boardPieces[int(destination.first - 97)][destination.second]) != nullptr) { return true; }
+		if ((boardPieces[int(destination.first - 97)][destination.second - 1]) != nullptr) { return true; }
 		return false;
 	}
 
@@ -217,10 +217,88 @@ public:
 	}
 
 	//returns true if the questioned player has been checkmated
-	bool isCheckmate(Player* player_in) { return false; }
+	bool isCheckmate(Player* player_in) { 
+		//need to check: 
+		//    1. that the king cannot move anywhere else
+		//        - loop through all moves for king
+		//    2. no pieces can block an opponents' piece such that the king is no longer in check
+		//        - loop through all moves for all pieces (this includes 1)
+		//loops for each of these
 
-	//returns true if the player can castle with the two pieces. they must not be in check
-	bool canCastle(Piece* piece1, Piece* piece2, bool isInCheck) { return false; }
+		//basic logic:
+		//
+		//for every piece left, if one can move s.t. the player is no longer in check,
+		//return false
+		//to return true, all pieces must not be able to get the player out of check
+
+		for (auto i = player_in->pieces.begin(); i < player_in->pieces.end(); ++i) {
+			//!!!!loop through all moves in here!!!!
+		}
+		return true;
+	}
+
+	//returns true if the player can castle with the king and the inputted rook. they must not be in check
+	bool canCastle(Player* player_in, Piece* piece_in) {
+		//cannot castle if in check
+		if (this->isInCheck(player_in)) { return false; }
+
+		//making sure the king hasn't moved
+		std::pair<char, int> king_loc = player_in->getKing()->getLocation();
+		if (player_in->getTeam() == "black" && king_loc != std::pair<char,int> {'e', 8}) { return false; }
+		if (player_in->getTeam() == "white" && king_loc != std::pair<char, int> {'e', 1}) { return false; }
+		
+		//if we've gotten here, the king has not been moved. so we need to check that the rook hasn't either
+		
+		//starting positions are different for different teams
+		
+		//need to also make sure no pieces are in between!
+
+		std::pair<char, int> rook_loc = piece_in->getLocation();
+
+		if (piece_in->getAbbr() == "R") {
+			if(player_in->getTeam() == "black" && 
+				(king_loc == std::pair<char, int> {'a', 8} || king_loc == std::pair<char, int> {'h', 8})) {
+
+				//making sure there are no pieces in between the rook and king!
+
+				if (rook_loc.first > king_loc.first) {
+					for (int i = king_loc.first; i < rook_loc.first; ++i) {
+						//every piece in between must be nullptr
+						if (boardPieces[i - 97][7] != nullptr) { return false; }
+					}
+					return true;
+				}
+				if (king_loc.first > rook_loc.first) {
+					for (int i = rook_loc.first; i < king_loc.first; ++i) {
+						//every piece in between must be nullptr
+						if (boardPieces[i - 97][7] != nullptr) { return false; }
+					}
+					return true;
+				}
+			}
+			if (player_in->getTeam() == "white" &&
+				(king_loc == std::pair<char, int> {'a', 1} || king_loc == std::pair<char, int> {'h', 1})) {
+				
+				//making sure there are no pieces in between the rook and king!
+
+				if (rook_loc.first > king_loc.first) {
+					for (int i = king_loc.first; i < rook_loc.first; ++i) {
+						//every piece in between must be nullptr
+						if (boardPieces[i - 97][0] != nullptr) { return false; }
+					}
+					return true;
+				}
+				if (king_loc.first > rook_loc.first) {
+					for (int i = rook_loc.first; i < king_loc.first; ++i) {
+						//every piece in between must be nullptr
+						if (boardPieces[i - 97][0] != nullptr) { return false; }
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	//performs a castle for the given pieces
 	void castle(Piece* piece1, Piece* piece2) {}

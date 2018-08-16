@@ -39,6 +39,24 @@ public:
 			|| gameBoard.isCheckmate(gameBoard.getPlayer2);
 	}
 
+	void play() {
+
+		while (!this->over()) {
+			//make teams
+
+			//take turns
+
+			//go until someone is in checkmate (or presses 's' or 'q'?)
+		}
+		Player* winner = nullptr;
+		if (gameBoard.isCheckmate(gameBoard.getPlayer1)) { winner = gameBoard.getPlayer2(); }
+		else { winner = gameBoard.getPlayer1(); }
+
+		std::cout << "\n\n\n" << "==============================\n"; 
+		std::cout << "Congratulations, " + winner->getName() + "! You won!";
+
+	}
+
 private:
 	Board gameBoard;
 	Player* upNext;
@@ -154,7 +172,8 @@ int main() {
 		std::pair<Player*, Player*> players = makeTeams(playerTypes);
 		Player* player1 = players.first;
 		Player* player2 = players.second;
-		Board gameBoard = Board(player1, player2);
+		Game game("new", player1, player2);
+		game.play();
 	} 
 	else {
 		//do something w/ loading games
