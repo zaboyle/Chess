@@ -2,7 +2,7 @@
 #define PLAYER_H
 #include "pieces.h"
 //#include <string>
-#include <vector>
+//#include <vector>
 /*
 ////MAKE 'PLAYER' ADT////
 ****work out issues with board****
@@ -22,7 +22,16 @@ class Player {
 public:
 
 	//MAY NOT NEED THIS//
-	virtual Piece* find(Piece* piece) = 0;
+	virtual Piece* findByLocation(std::string location) {
+		std::pair<char, int> position = std::pair<char, int>(location[0], location[1] - 97);
+		for (Piece* p : pieces) {
+			//using my self-defined equality operator
+			if (p->getLocation() == position) {
+				return p;
+			}
+		}
+		return nullptr;
+	}
 
 	Piece* getKing() {
 		for (auto iter = pieces.begin(); iter < pieces.end(); ++iter) {
@@ -30,13 +39,13 @@ public:
 		}
 	}
 
-	virtual void makeMove(Piece* piece, std::string destination) = 0;
+	virtual void makeMove(std::string piece_start_loc, std::string piece_destination) = 0;
 
 	virtual void addPiece(Piece* piece_in) {
 		pieces.push_back(piece_in);
 	}
 
-	virtual void removePiece(Piece* piece) = 0;
+	virtual void removePiece(std::string location) = 0;
 
 	virtual ~Player() {}
 
@@ -74,29 +83,15 @@ public:
 		setTeam(team_in);
 	}
 
-	//REQUIRES: piece is not a nullptr
-	//returns the pointer to the piece that is
-	//trying to be found in the given player's pieces vector
-	Piece* find(Piece* piece) override {
-		for (int i = 0; i < int(pieces.size()); ++i) {
-			//if the locations are equal, this is the piece
-			//you're looking for since there can only be
-			//one piece at a location at a time
-			if (piece->getLocation() == pieces[i]->getLocation()) {
-				return pieces[i];
-			}
-		}
-		return nullptr;
-	}
-
 	//changes the location of the desired piece to the given destination
-	void makeMove(Piece *piece, std::string destination) override {
-		piece->setLocation(destination);
+	void makeMove(std::string piece_start_loc, std::string piece_destination) override {
+		Piece* piece = this->findByLocation(piece_start_loc);
+		piece->setLocation(piece_destination);
 	}
 
 	//removes the piece from the pieces vector
-	void removePiece(Piece* piece) override {
-		Piece* piecePtr = find(piece);
+	void removePiece(std::string location) override {
+		Piece* piecePtr = findByLocation(location);
 		delete piecePtr;
 		piecePtr = nullptr;
 	}
@@ -122,29 +117,16 @@ public:
 		//push back standard set of starting pieces for given team
 	}
 
-	//returns the pointer to the piece that is
-	//trying to be found in the given player's pieces vector
-	Piece* find(Piece* piece) override {
-		for (int i = 0; i < int(pieces.size()); ++i) {
-			//if the locations are equal, this is the piece
-			//you're looking for since there can only be
-			//one piece at a location at a time
-			if (piece->getLocation() == pieces[i]->getLocation()) {
-				return pieces[i];
-			}
-		}
-		return nullptr;
-	}
-
 	//*****Need to create a function to figure out which piece to
 	//move and where to move it****
-	void makeMove(Piece* piece, std::string destination) override {
-		piece->setLocation(destination);
+	void makeMove(std::string piece_start_loc, std::string piece_destination) override {
+		Piece* piece = this->findByLocation(piece_start_loc);
+		piece->setLocation(piece_destination);
 	}
 
 	//removes the piece from the pieces vector
-	void removePiece(Piece* piece) override {
-		Piece* piecePtr = find(piece);
+	void removePiece(std::string location) override {
+		Piece* piecePtr = findByLocation(location);
 		delete piecePtr;
 		piecePtr = nullptr;
 	}

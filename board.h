@@ -148,15 +148,34 @@ public:
 	}
 	//...
 
-	bool isPieceAtLoc(std::pair<char, int> destination) {
-		if ((boardPieces[int(destination.first - 97)][destination.second - 1]) != nullptr) { return true; }
+	bool isPieceAtLoc(std::string destination) {
+		if ((boardPieces[int(destination[0] - 97)][destination[1] - 1]) != nullptr) { return true; }
 		return false;
 	}
 
-	bool isPieceInTheWay(Piece* piece, std::pair<char, int> destination) {
+	bool isPieceInTheWay(Piece* piece, std::string destination) {
 		//needed for all pieces except knights (maybe pawns?)
 		//iterate between all x and y values that are hit
+		
+		if (piece->getAbbr() == "P") {
 
+		}
+		else if (piece->getAbbr() == "Kn") {
+
+		}
+		else if (piece->getAbbr() == "B") {
+
+		}
+		else if (piece->getAbbr() == "R") {
+
+		}
+		else if (piece->getAbbr() == "Q") {
+
+		}
+		else if (piece->getAbbr() == "K") {
+			//because the king can only move one space at a time
+			return this->isPieceAtLoc(destination);
+		}
 		return false;
 	}
 
@@ -176,22 +195,28 @@ public:
 
 	//returns true if the user-inputted destination is a valid place for the piece to move
 	//to and false otherwise. Includes taking pieces
-	bool legalMove(Player* player, Piece* piece, std::string destination) {
+	bool legalMove(Player* player, std::string piece_start_pos, std::string piece_destination) {
 
-		std::pair<char, int> loc(destination[0], destination[1]);
+		Piece* piece = player->findByLocation(piece_start_pos);
 
-		if (!inBounds(destination) || !(piece->validMove(destination, piece->getTeam()))) { return false; }
-		if (isPieceAtLoc(loc) && !piece->validTake(destination, piece->getTeam())) { return false; }
+		if (!inBounds(piece_destination) || !(piece->validMove(piece_destination, piece->getTeam()))) { return false; }
+		if (isPieceAtLoc(piece_destination) && !piece->validTake(piece_destination, piece->getTeam())) { return false; }
 		//if the piece can perform the move, return true
+
+
+		//if there is a piece in the way, return false;
+
+
 		return true;
 	}
 
+	//REQUIRES: the move is legal
 	//moves the piece to the given destination
 	//make sure to update the nextPlayerToMove pointer
-	void movePiece(Player* player, Piece* piece, std::string destination) {
-		assert(this->legalMove(player, piece, destination));
+	void movePiece(Player* player, std::string piece_start_pos, std::string piece_destination) {
+		assert(this->legalMove(player, piece_start_pos, piece_destination));
 		//
-		player->makeMove(piece, destination);
+		player->makeMove(piece_start_pos, piece_destination);
 	}
 
 	//returns true if the player is in check. false otherwise

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 /*
 
 ////MAKE 'PIECE' ADT////
@@ -16,6 +17,27 @@
 - queen, 9, Q
 - king,  n/a, K
 
+PIECES AND UNICODE ABBREVIATIONS:
+King:
+	Black: \u265a
+	White: \u2654
+Queen:
+	Black: \u265b
+	White: \u2655
+Rook:
+	Black: \u265c
+	White: \u2656
+Bishop:
+	Black: \u265d
+	White: \u2657
+Knight:
+	Black: \u265e
+	White: \u2658
+Pawn:
+	Black: \u265f
+	White: \u2659
+	
+
 Implementation ideas:
 - only member variable might be position
 - virtual move/take functions <-- should there even be a 'take' function?
@@ -24,6 +46,7 @@ Implementation ideas:
 on the board for easier distinciton (see 183 projects for help)
 */
 class Piece {
+
 public:
 
 	Piece(std::string abbr_in, int points_in, std::string location_in, std::string team_in) 
@@ -64,6 +87,11 @@ public:
 		return team;
 	}
 
+	virtual std::vector<std::pair<char, int>> getPiecesInWay(std::string start, std::string dest) {
+		std::vector<std::pair<char, int>> empty;
+		return empty;
+	}
+
 	//returns true if the piece can take an opponent's piece located at destination. 
 	//DOES NOT CONSIDER CHECK
 	virtual bool validTake(std::string destination, std::string team) {
@@ -86,6 +114,7 @@ private:
 	//number of points the piece is worth
 	int points;
 	std::string team;
+	std::vector<std::pair<char, int>> piecesInWay;
 };
 
 class Pawn : public Piece {

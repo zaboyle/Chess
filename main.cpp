@@ -41,18 +41,40 @@ public:
 
 	void play() {
 
-		while (!this->over()) {
-			//make teams
+		std::cout << "Use the following format to enter moves:\n";
+		std::cout << "<location of piece you wish to move> <destination you wish to move to>\n";
+		std::cout << "This program assumes you enter moves in the correct format. If your move is illegal, players will be prompted until a valid move is given\n\n\n";
 
-			//take turns
+		while(!this->over()) {
+			//teams and board - already done
+			
+			//get input from user
+			std::string start_loc, end_loc;
+			std::cout << upNext->getName() + ", enter move: ";
+			std::cin >> start_loc >> end_loc;
+			
+			while(!gameBoard.legalMove(upNext, start_loc, end_loc)) {
+				//cout you cant do that
+				std::cout << "Sorry, that was an invalid move. Please enter a legal move:";
+				std::cin >> start_loc >> end_loc;
+			}
+
+			//announcing where each move
+			std::cout << "\n" + upNext->getName() + "'s move:\n";
+			std::cout << "\n" + upNext->findByLocation(start_loc)->getAbbr() + " to " + end_loc + "\n";
+			
+			gameBoard.movePiece(upNext, start_loc, end_loc);
 
 			//go until someone is in checkmate (or presses 's' or 'q'?)
 		}
+
 		Player* winner = nullptr;
 		if (gameBoard.isCheckmate(gameBoard.getPlayer1)) { winner = gameBoard.getPlayer2(); }
 		else { winner = gameBoard.getPlayer1(); }
 
-		std::cout << "\n\n\n" << "==============================\n"; 
+		char icons[13] = { '\u2659', '\u2658', '\u2657', '\u2656', '\u2655', '\u2654', '\u265a', '\u265b', '\u265c', '\u265d', '\u265e', '\u265f'};
+
+		std::cout << "\n\n\n" << icons << "\n==============================\n";
 		std::cout << "Congratulations, " + winner->getName() + "! You won!";
 
 	}
