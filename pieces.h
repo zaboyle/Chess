@@ -2,7 +2,7 @@
 #define PIECES_H
 
 #include <string>
-#include <map>
+//#include <map>
 #include <vector>
 /*
 
@@ -297,8 +297,11 @@ private:
 	
 };
 
+/*
+
 bool operator==(std::pair<char, int> &loc1, std::pair<char, int> &loc2) {
-	return loc1.first == loc2.first && loc1.second == loc2.second;
+return loc1.first == loc2.first && loc1.second == loc2.second;
 }
 
+*/
 #endif //

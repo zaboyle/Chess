@@ -24,19 +24,37 @@ generic game functionalities:
 	- game ends with checkmate OR user types "quit"
 */
 
-//define game ADT here//
+/* this overloaded operator must be above the 'play'
+   function due to compile reasons. This operator
+   prints the board to the console in the given format
+   with pieces represented as their symbols
+*/
+std::ostream & operator<<(std::ostream &os, const Board &board) {
+	//print board to os
+	for (int row = 0; row < 8; ++row) {
+		os << " +----+----+----+----+----+----+----+----+" << std::endl << (8 - row) << " ";
+		for (int col = 0; col < 8; ++col) {
+			os << "| " << board.getBoardPiecesAbbrAt(row, col) << " ";
+		}
+		os << "|" << std::endl;
+	}
+	os << " +----+----+----+----+----+----+----+----+" << std::endl;
+	os << "   a    b    c    d    e    f    g    h" << std::endl << std::endl;
+	return os;
+}
 
+//define game ADT here//
 class Game {
 public:
 	Game(std::string gameType, Player* player1_in, Player* player2_in) : gameBoard(Board(player1_in, player2_in)) {
-		if (player1_in->getTeam == "white") { upNext = player1_in; }
-		else if(player2_in->getTeam == "white"){ upNext = player2_in; }
+		if (player1_in->getTeam() == "white") { upNext = player1_in; }
+		else if(player2_in->getTeam() == "white"){ upNext = player2_in; }
 	}
 	
 	//game is over when one player is in checkmate
 	bool over() {
-		return gameBoard.isCheckmate(gameBoard.getPlayer1) 
-			|| gameBoard.isCheckmate(gameBoard.getPlayer2);
+		return gameBoard.isCheckmate(gameBoard.getPlayer1()) 
+			|| gameBoard.isCheckmate(gameBoard.getPlayer2());
 	}
 
 	void play() {
@@ -47,7 +65,7 @@ public:
 
 		while(!this->over()) {
 			//teams and board - already done
-			
+			std::cout << gameBoard;
 			//get input from user
 			std::string start_loc, end_loc;
 			std::cout << upNext->getName() + ", enter move: ";
@@ -68,8 +86,10 @@ public:
 			//go until someone is in checkmate (or presses 's' or 'q'?)
 		}
 
+		std::cout << gameBoard;
+
 		Player* winner = nullptr;
-		if (gameBoard.isCheckmate(gameBoard.getPlayer1)) { winner = gameBoard.getPlayer2(); }
+		if (gameBoard.isCheckmate(gameBoard.getPlayer1())) { winner = gameBoard.getPlayer2(); }
 		else { winner = gameBoard.getPlayer1(); }
 
 		char icons[13] = { '\u2659', '\u2658', '\u2657', '\u2656', '\u2655', '\u2654', '\u265a', '\u265b', '\u265c', '\u265d', '\u265e', '\u265f'};
@@ -115,6 +135,11 @@ void printPlayerOptions() {
 	std::cout << "\n1: Human v Human\n";
 	std::cout << "2: Human v CPU\n";
 	std::cout << "3: CPU v CPU\n";
+}
+
+Player* Player_factory(std::string &name_in, std::string &team_in, std::string type_in) {
+	if (type_in == "human") { return new HumanPlayer(name_in, team_in); }
+	return new cpuPlayer(team_in);
 }
 
 std::pair<std::string, std::string> getPlayerTypes() {
@@ -182,6 +207,8 @@ std::pair<Player*, Player*> makeTeams(std::pair<std::string, std::string> player
 	player2Ptr = Player_factory(player2Name, player2Team, player2Type);
 	return { player1Ptr, player2Ptr };
 }
+
+
 
 int main() {
 	//ask for HvH, CPUvH, or CPUvCPU

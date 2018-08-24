@@ -154,13 +154,9 @@ public:
 	}
 
 	bool isPieceInTheWay(Piece* piece, std::string destination) {
-		//needed for all pieces except knights (maybe pawns?)
+		//needed for all pieces except knights
 		//iterate between all x and y values that are hit
-		
 		if (piece->getAbbr() == "P") {
-
-		}
-		else if (piece->getAbbr() == "Kn") {
 
 		}
 		else if (piece->getAbbr() == "B") {
@@ -199,14 +195,15 @@ public:
 
 		Piece* piece = player->findByLocation(piece_start_pos);
 
+		//if the piece is out of bounds or it's not a valid move, it is not legal
 		if (!inBounds(piece_destination) || !(piece->validMove(piece_destination, piece->getTeam()))) { return false; }
+		//this is mostly for pawns, since all other pieces take the same way they move
 		if (isPieceAtLoc(piece_destination) && !piece->validTake(piece_destination, piece->getTeam())) { return false; }
-		//if the piece can perform the move, return true
-
 
 		//if there is a piece in the way, return false;
+		if (isPieceInTheWay(piece, piece_destination)) { return false; }
 
-
+		//if the piece can perform the move, return true
 		return true;
 	}
 
@@ -227,7 +224,7 @@ public:
 		std::pair<char, int> location = king->getLocation();
 		std::string loc = location.first + std::to_string(location.second);
 		//make sure it actually concatenated string, not just added ASCII values
-		assert(loc.length == 2);
+		assert(loc.length() == unsigned int(2));
 
 		Player* otherPlayer = nullptr;
 		if (player_in == player1) { otherPlayer = player2; }
@@ -350,20 +347,4 @@ public:
 
 
 };
-
-//prints the board to the console in the given format
-//with pieces represented as their symbols
-std::ostream & operator<<(std::ostream &os, const Board &board) {
-	//print board to os
-	for (int row = 0; row < 8; ++row) {
-		os << " +----+----+----+----+----+----+----+----+" << std::endl << (8 - row) << " ";
-		for (int col = 0; col < 8; ++col) {
-			os << "| " << board.getBoardPiecesAbbrAt(row, col) << " ";
-		}
-		os << "|" << std::endl;
-	}
-	os << " +----+----+----+----+----+----+----+----+" << std::endl;
-	os << "   a    b    c    d    e    f    g    h" << std::endl << std::endl;
-	return os;
-}
 #endif

@@ -141,9 +141,4 @@ public:
 private:
 	
 };
-
-Player* Player_factory(std::string &name_in, std::string &team_in, std::string type_in) {
-	if (type_in == "human") { return new HumanPlayer(name_in, team_in); }
-	return new cpuPlayer(team_in);
-}
 #endif //
