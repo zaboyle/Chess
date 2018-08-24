@@ -87,11 +87,6 @@ public:
 		return team;
 	}
 
-	virtual std::vector<std::pair<char, int>> getPiecesInWay(std::string start, std::string dest) {
-		std::vector<std::pair<char, int>> empty;
-		return empty;
-	}
-
 	//returns true if the piece can take an opponent's piece located at destination. 
 	//DOES NOT CONSIDER CHECK
 	virtual bool validTake(std::string destination, std::string team) {
@@ -114,7 +109,7 @@ private:
 	//number of points the piece is worth
 	int points;
 	std::string team;
-	std::vector<std::pair<char, int>> piecesInWay;
+	
 };
 
 class Pawn : public Piece {
