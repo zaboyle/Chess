@@ -208,7 +208,7 @@ private:
 
 class Knight : public Piece {
 public:
-	Knight(std::string location_in, std::string team_in) : Piece("KN", 3, location_in, team_in) {}
+	Knight(std::string location_in, std::string team_in) : Piece("N", 3, location_in, team_in) {}
 
 	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();

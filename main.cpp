@@ -60,8 +60,10 @@ public:
 	void play() {
 
 		std::cout << "Use the following format to enter moves:\n";
-		std::cout << "<location of piece you wish to move> <destination you wish to move to>\n";
-		std::cout << "This program assumes you enter moves in the correct format. If your move is illegal, players will be prompted until a valid move is given\n\n\n";
+		std::cout << "<piece_start_location> <piece_destination>\n";
+		std::cout << "example move input: c1 g5\n";
+		std::cout << "This program assumes you enter moves in the correct format\n";
+		std::cout <<  "If your move is illegal, players will be prompted until a valid move is given\n\n\n";
 
 		while(!this->over()) {
 			//teams and board - already done

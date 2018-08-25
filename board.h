@@ -154,6 +154,39 @@ public:
 	}
 	//...
 
+	//board copy ctor
+	Board(Board* board_in) {
+		this->player1 = board_in->player1;
+		this->player2 = board_in->player2;
+		this->nextPlayerToMove = board_in->nextPlayerToMove;
+
+		for (int r = 0; r < 8; ++r) {
+			for (int c = 0; c < 8; ++c) {
+				Piece* piece = board_in->boardPieces[r][c];
+				std::string location = piece->getLocation().first + std::to_string(piece->getLocation().second);
+				
+				if (piece->getAbbr() == "P") {
+					this->boardPieces[r][c] = new Pawn(location, piece->getTeam());
+				}
+				else if (piece->getAbbr() == "N") {
+					this->boardPieces[r][c] = new Knight(location, piece->getTeam());
+				}
+				else if (piece->getAbbr() == "B") {
+					this->boardPieces[r][c] = new Bishop(location, piece->getTeam());
+				}
+				else if (piece->getAbbr() == "R") {
+					this->boardPieces[r][c] = new Rook(location, piece->getTeam());
+				}
+				else if (piece->getAbbr() == "Q") {
+					this->boardPieces[r][c] = new Queen(location, piece->getTeam());
+				}
+				else if (piece->getAbbr() == "K") {
+					this->boardPieces[r][c] = new King(location, piece->getTeam());
+				}
+			}
+		}
+	}
+
 	bool isPieceAtLoc(std::string destination) {
 		if ((boardPieces[destination[0] - 97][destination[1] - 48]) != nullptr) { return true; }
 		return false;
@@ -180,7 +213,7 @@ public:
 		}
 		else if (piece->getAbbr() == "K") {
 			//because the king can only move one space at a time
-			return this->isPieceAtLoc(destination);
+			return isPieceAtLoc(destination);
 		}
 		return false;
 	}
@@ -210,16 +243,11 @@ public:
 		//this is mostly for pawns, since all other pieces take the same way they move
 		if (isPieceAtLoc(piece_destination) && !piece->validTake(piece_destination, piece->getTeam())) { return false; }
 
-		//if there is a piece in the way, return false;
+		//if there is a piece in the way, it is not legal
 		if (isPieceInTheWay(piece, piece_destination)) { return false; }
 
-		//IF THE MOVE RESULTS IN THE PLAY BEING IN CHECK, RETURN FALSE
-		//
-		//
-		//
-		//
-		//
-		//
+		//if the move results in the player being in check, it is not valid
+		if (moveResultsInCheck(player, piece_start_pos, piece_destination)) { return false; }
 
 		//if the piece can perform the move, return true
 		return true;
@@ -229,7 +257,8 @@ public:
 	//moves the piece to the given destination
 	//make sure to update the nextPlayerToMove pointer
 	void movePiece(Player* player_in, std::string piece_start_pos, std::string piece_destination) {
-		assert(this->legalMove(player_in, piece_start_pos, piece_destination));
+		//this will cause an infinite loop because movePiece is called within legalMove
+		//assert(this->legalMove(player_in, piece_start_pos, piece_destination));
 		//
 		Player* otherPlayer = nullptr;
 		if (player_in == player1) { otherPlayer = player2; }
@@ -269,6 +298,21 @@ public:
 		return false;
 	}
 
+	//returns true if the 
+	bool moveResultsInCheck(Player* player, std::string piece_start_pos, std::string piece_destination) {
+		Board testBoard(this);
+		//now we have a board that is a copy of the current board
+		//if we make this move on the test board, and the player is still in check,
+		//we will know this move results in check
+
+		testBoard.movePiece(player, piece_start_pos, piece_destination);
+		if (testBoard.isInCheck(player)) { return true; }
+
+		return false;
+		//no need to worry about testBoard dtor because it is called implicitly when the function exits
+	}
+
+
 	//returns true if the questioned player has been checkmated
 	bool isCheckmate(Player* player_in) {
 		//basic logic:
@@ -280,7 +324,13 @@ public:
 		for (auto i = player_in->pieces.begin(); i < player_in->pieces.end(); ++i) {
 			
 			//get the string form of the start location of the piece
+
+
+			//THIS IS CAUSING A BAD ALLOC
 			std::string piece_start = (*i)->getLocation().first + std::to_string((*i)->getLocation().second);
+			//THIS IS CAUSING A BAD ALLOC
+
+
 
 			for (char r = 'a'; r < 'i'; ++r) {
 				for (int c = 0; c < 8; ++c) {
@@ -364,11 +414,10 @@ public:
 
 	}
 
-	/*
 	std::string getBoardPiecesAbbrAt(int row, int col) const {
 		return boardPieces[row][col]->getAbbr();
 	}
-	*/
+	
 
 	Player* getPlayer1() {
 		return player1;
@@ -376,6 +425,23 @@ public:
 
 	Player* getPlayer2() {
 		return player2;
+	}
+
+	//destructor
+	~ Board() {
+		for (int r = 0; r < 8; ++r) {
+			for (int c = 0; c < 8; ++c) {
+				if (boardPieces[r][c] != nullptr) { 
+					delete boardPieces[r][c];
+					boardPieces[r][c] = nullptr;
+				}
+			}
+		}
+		delete player1;
+		player1 = nullptr;
+		delete player2;
+		player2 = nullptr;
+		//DO NOT delete nextPlayerToMove because that would be a double free
 	}
 
 	private:

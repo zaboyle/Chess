@@ -23,7 +23,7 @@ public:
 
 	//MAY NOT NEED THIS//
 	virtual Piece* findByLocation(std::string location) {
-		std::pair<char, int> position = std::pair<char, int>(location[0], location[1] - 97);
+		std::pair<char, int> position = {location[0], (location[1] - 48)};
 		for (Piece* p : pieces) {
 			//using my self-defined equality operator
 			if (p->getLocation() == position) {
