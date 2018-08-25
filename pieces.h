@@ -53,7 +53,7 @@ public:
 		: location({ location_in[0], int(location_in[1]) }), abbreviation(abbr_in), points(points_in), team(team_in) {
 	}
 
-	virtual bool validMove(const std::string destination ,std::string team) = 0;
+	virtual bool validMove(std::string destination ,std::string team) = 0;
 
 	//returns the abbreviation of the given piece
 	virtual std::string getAbbr() {
@@ -123,24 +123,27 @@ public:
 	}
 
 	//returns true if the piece is "allowed" to move to the given location
-	bool validMove(const std::string destination) { 
+	bool validMove(std::string destination) { 
 		std::pair<char, int> loc = getLocation();
+
+		//adjusting for ASCII '0'
+		destination[1] -= 48;
 
 		//pawns can only move forwards. We will deal with taking pieces in the board ADT
 		if (destination[0] != loc.first) { return false; }
 
 		if (this->getTeam() == "black") {
 			//moving 2 at start of game
-			if (loc.second == 7 && int(destination[1]) == (loc.second - 2)) { return true; }
+			if (loc.second == 7 && destination[1] == (loc.second - 2)) { return true; }
 			//pawns can always move 1 ahead
-			if (int(destination[1]) == (loc.second - 1)) { return true; }
+			if (destination[1] == (loc.second - 1)) { return true; }
 		}
 
 		if (this->getTeam() == "white") {
 			//moving 2 at start of game
-			if (loc.second == 2 && int(destination[1]) == (loc.second + 2)) { return true; }
+			if (loc.second == 2 && destination[1] == (loc.second + 2)) { return true; }
 			//pawns can always move 1 spot ahead
-			if (int(destination[1]) == (loc.second + 1)) { return true; }
+			if (destination[1] == (loc.second + 1)) { return true; }
 
 		}
 		
@@ -164,7 +167,7 @@ public:
 			so, the column must be 1 to the left OR right, AND the row must be 1 down
 			*/
 			if ((loc.first == (destination[0] - 1) || loc.first == (destination[0] + 1)) 
-				&& loc.second == (int(destination[1]) - 1)) { return true; }
+				&& loc.second == (destination[1] - 48 - 1)) { return true; }
 		}
 
 		/*
@@ -182,7 +185,7 @@ public:
 		*/
 		if (this->getTeam() == "white") {
 			if ((loc.first == (destination[0] - 1) || loc.first == (destination[0] + 1))
-				&& loc.second == (int(destination[1]) + 1)) {
+				&& loc.second == (destination[1] - 48 + 1)) {
 				return true;
 			}
 		}
@@ -207,8 +210,11 @@ class Knight : public Piece {
 public:
 	Knight(std::string location_in, std::string team_in) : Piece("KN", 3, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override {
+	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
+
+		//adjusting for ASCII '0'
+		destination[1] -= 48;
 
 		//all ways to move in an "L" shape on the board
 		if(loc.first == (destination[0] - 1) && loc.second == (destination[1] + 2) ||
@@ -233,8 +239,12 @@ class Bishop : public Piece {
 public:
 	Bishop(std::string location_in, std::string team_in) : Piece("B", 3, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override {
+	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
+
+		//adjusting for ASCII '0'
+		destination[1] -= 48;
+
 		if ((destination[1] - loc.second) == (int(destination[0]) - int(loc.first))) { return true; }
 		return false;
 	}
@@ -247,8 +257,12 @@ class Rook : public Piece {
 public:
 	Rook(std::string location_in, std::string team_in) : Piece("R", 5, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override {
+	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
+
+		//adjusting for ASCII '0'
+		destination[1] -= 48;
+
 		if ((destination[1] == loc.second) || (destination[0] == loc.first)) { return true; }
 		return false;
 	}
@@ -261,9 +275,15 @@ class Queen : public Piece {
 public:
 	Queen(std::string location_in, std::string team_in) : Piece("Q", 9, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override { 
+	bool validMove(std::string destination, std::string team) override { 
 		std::pair<char, int> loc = getLocation();
-		if ((destination[1] - loc.second) == (int(destination[0]) - int(loc.first))) { return true; }
+		//need to adjust because ASCII '0' has value 48
+		destination[1] -= 48;
+
+		//if the move is diagonal, return true (y difference is equal to x difference)
+		if ((destination[1] - loc.second) == (destination[0] - loc.first)) { return true; }
+
+		//if the move is in a straight line (x value or y value is the same)
 		if ((destination[1] == loc.second) || (destination[0] == loc.first)) { return true; }
 		return false;
 	}
@@ -276,8 +296,12 @@ class King : public Piece {
 public:
 	King(std::string location_in, std::string team_in) : Piece("K", 0, location_in, team_in) {}
 
-	bool validMove(const std::string destination, std::string team) override { 
+	bool validMove(std::string destination, std::string team) override { 
 		std::pair<char, int> loc = getLocation();
+
+		//ASCII '0' has value 48
+		//need to make sure this doesnt do "character math"
+		destination[1] -= 48;
 
 		//4 diagonal spaces
 		//2 vertical spaces

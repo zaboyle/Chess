@@ -149,13 +149,17 @@ public:
 	//...
 
 	bool isPieceAtLoc(std::string destination) {
-		if ((boardPieces[int(destination[0] - 97)][destination[1] - 1]) != nullptr) { return true; }
+		if ((boardPieces[destination[0] - 97][destination[1] - 48]) != nullptr) { return true; }
 		return false;
 	}
 
 	bool isPieceInTheWay(Piece* piece, std::string destination) {
 		//needed for all pieces except knights
 		//iterate between all x and y values that are hit
+
+		//adjusting for ASCII '0'
+		destination[1] -= 48;
+
 		if (piece->getAbbr() == "P") {
 
 		}
@@ -183,7 +187,7 @@ public:
 		//that is the decimal value for 'a'
 		//second part of the location must also be in range [0, 8)
 		if (destination[0] - 97 >= 0 && destination[0] - 97 < 8 
-			&& destination[1] >= 0 && destination[1] < 8) {
+			&& destination[1] - 48 >= 0 && destination[1] - 48 < 8) {
 			return true;
 		}
 		return false;
@@ -202,6 +206,14 @@ public:
 
 		//if there is a piece in the way, return false;
 		if (isPieceInTheWay(piece, piece_destination)) { return false; }
+
+		//IF THE MOVE RESULTS IN THE PLAY BEING IN CHECK, RETURN FALSE
+		//
+		//
+		//
+		//
+		//
+		//
 
 		//if the piece can perform the move, return true
 		return true;
@@ -231,6 +243,7 @@ public:
 		else { otherPlayer = player1; }
 
 		for (auto iter = (otherPlayer->pieces).begin(); iter < (otherPlayer->pieces).end(); ++iter) {
+			//if any opponent's piece can reach a player's king, they are in check
 			if ((*iter)->validTake(loc, (*iter)->getTeam())) {
 				return true;
 			}
@@ -253,8 +266,22 @@ public:
 		//return false
 		//to return true, all pieces must not be able to get the player out of check
 
+
+		//!!!!loop through ALL moves for ALL pieces in here!!!!
 		for (auto i = player_in->pieces.begin(); i < player_in->pieces.end(); ++i) {
-			//!!!!loop through all moves in here!!!!
+			
+			for (char r = 'a'; r < 'i'; ++r) {
+				for (int c = 0; c < 8; ++c) {
+					//create string of the possible move location for each piece
+					std::string possible_move_loc = r + std::to_string(c);
+					//now the string should have values between [a-h][0-7]
+
+					//get the string form of the start location of the piece
+					std::string piece_start = (*i)->getLocation().first + std::to_string((*i)->getLocation().second);
+
+					if (this->legalMove(player_in, piece_start, possible_move_loc)) { return false; }
+				}
+			}
 		}
 		return true;
 	}
@@ -282,7 +309,6 @@ public:
 				(king_loc == std::pair<char, int> {'a', 8} || king_loc == std::pair<char, int> {'h', 8})) {
 
 				//making sure there are no pieces in between the rook and king!
-
 				if (rook_loc.first > king_loc.first) {
 					for (int i = king_loc.first; i < rook_loc.first; ++i) {
 						//every piece in between must be nullptr

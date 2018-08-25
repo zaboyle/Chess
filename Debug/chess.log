@@ -3,16 +3,16 @@
   board.cpp
   Generating Code...
   main.cpp
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2659' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2658' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2657' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2656' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2655' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u2654' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265A' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265B' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265C' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265D' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265E' cannot be represented in the current code page (1252)
-main.cpp(93): warning C4566: character represented by universal-character-name '\u265F' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2659' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2658' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2657' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2656' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2655' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u2654' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265A' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265B' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265C' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265D' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265E' cannot be represented in the current code page (1252)
+main.cpp(95): warning C4566: character represented by universal-character-name '\u265F' cannot be represented in the current code page (1252)
   chess.vcxproj -> C:\Users\zaboy\Desktop\freetime_programming\Chess\C++\Debug\chess.exe
