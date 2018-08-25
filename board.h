@@ -87,8 +87,11 @@ public:
 		boardPieces[6][7] = new Knight("g8", "black");
 		boardPieces[7][7] = new Rook("h8", "black");
 		//row of pawns
-		for (int i = 0; i < 8; ++i) {
-			boardPieces[i][7] = new Pawn((('a' + i) + "7"), "black");
+		for (char c = 'a'; c < 'i'; ++c) {
+			std::string loc = "";
+			loc.append(std::to_string(c));
+			loc.append("7");
+			boardPieces[c - 97][7] = new Pawn(loc, "black");
 		}
 
 		//white pieces at bottom
@@ -101,8 +104,11 @@ public:
 		boardPieces[6][0] = new Knight("g1", "white");
 		boardPieces[7][0] = new Rook("h1", "white");
 		//row of pawns
-		for (int i = 0; i < 8; ++i) {
-			boardPieces[i][2] = new Pawn((('a' + i) + "2"), "white");
+		for (char c = 'a'; c < 'i'; ++c) {
+			std::string loc = "";
+			loc.append(std::to_string(c));
+			loc.append("2");
+			boardPieces[c - 97][2] = new Pawn(loc, "white");
 		}
 		//...
 
@@ -222,10 +228,22 @@ public:
 	//REQUIRES: the move is legal
 	//moves the piece to the given destination
 	//make sure to update the nextPlayerToMove pointer
-	void movePiece(Player* player, std::string piece_start_pos, std::string piece_destination) {
-		assert(this->legalMove(player, piece_start_pos, piece_destination));
+	void movePiece(Player* player_in, std::string piece_start_pos, std::string piece_destination) {
+		assert(this->legalMove(player_in, piece_start_pos, piece_destination));
 		//
-		player->makeMove(piece_start_pos, piece_destination);
+		Player* otherPlayer = nullptr;
+		if (player_in == player1) { otherPlayer = player2; }
+		else { otherPlayer = player1; }
+
+		player_in->makeMove(piece_start_pos, piece_destination);
+
+		//remove the piece from the player's pieces if it is being taken
+		if (this->isPieceAtLoc(piece_destination)) {
+			otherPlayer->removePiece(piece_destination);
+			//also remove the piece from the board
+			delete boardPieces[piece_destination[0] - 97][piece_destination[1] - 48];
+			boardPieces[piece_destination[0] - 97][piece_destination[1] - 48] = nullptr;
+		}
 	}
 
 	//returns true if the player is in check. false otherwise
@@ -236,7 +254,7 @@ public:
 		std::pair<char, int> location = king->getLocation();
 		std::string loc = location.first + std::to_string(location.second);
 		//make sure it actually concatenated string, not just added ASCII values
-		assert(loc.length() == unsigned int(2));
+		//assert(loc.length() == unsigned int(2));
 
 		Player* otherPlayer = nullptr;
 		if (player_in == player1) { otherPlayer = player2; }
@@ -252,32 +270,23 @@ public:
 	}
 
 	//returns true if the questioned player has been checkmated
-	bool isCheckmate(Player* player_in) { 
-		//need to check: 
-		//    1. that the king cannot move anywhere else
-		//        - loop through all moves for king
-		//    2. no pieces can block an opponents' piece such that the king is no longer in check
-		//        - loop through all moves for all pieces (this includes 1)
-		//loops for each of these
-
+	bool isCheckmate(Player* player_in) {
 		//basic logic:
 		//
-		//for every piece left, if one can move s.t. the player is no longer in check,
-		//return false
+		//for every piece left, if even one can move s.t. the player is no longer in check, return false
 		//to return true, all pieces must not be able to get the player out of check
-
 
 		//!!!!loop through ALL moves for ALL pieces in here!!!!
 		for (auto i = player_in->pieces.begin(); i < player_in->pieces.end(); ++i) {
 			
+			//get the string form of the start location of the piece
+			std::string piece_start = (*i)->getLocation().first + std::to_string((*i)->getLocation().second);
+
 			for (char r = 'a'; r < 'i'; ++r) {
 				for (int c = 0; c < 8; ++c) {
 					//create string of the possible move location for each piece
 					std::string possible_move_loc = r + std::to_string(c);
 					//now the string should have values between [a-h][0-7]
-
-					//get the string form of the start location of the piece
-					std::string piece_start = (*i)->getLocation().first + std::to_string((*i)->getLocation().second);
 
 					if (this->legalMove(player_in, piece_start, possible_move_loc)) { return false; }
 				}
@@ -349,11 +358,17 @@ public:
 	}
 
 	//performs a castle for the given pieces
-	void castle(Piece* piece1, Piece* piece2) {}
+	void castle(Piece* piece1, Piece* piece2) {
+		
+		//IMPLEMENT
 
+	}
+
+	/*
 	std::string getBoardPiecesAbbrAt(int row, int col) const {
 		return boardPieces[row][col]->getAbbr();
 	}
+	*/
 
 	Player* getPlayer1() {
 		return player1;
