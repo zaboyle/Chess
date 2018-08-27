@@ -91,7 +91,7 @@ public:
 			std::string loc = "";
 			loc.append(std::to_string(c));
 			loc.append("7");
-			boardPieces[c - 97][7] = new Pawn(loc, "black");
+			boardPieces[c - 97][6] = new Pawn(loc, "black");
 		}
 
 		//white pieces at bottom
@@ -108,7 +108,7 @@ public:
 			std::string loc = "";
 			loc.append(std::to_string(c));
 			loc.append("2");
-			boardPieces[c - 97][2] = new Pawn(loc, "white");
+			boardPieces[c - 97][1] = new Pawn(loc, "white");
 		}
 		//...
 
@@ -120,33 +120,33 @@ public:
 		}
 
 		//push back all the board pieces to player1 and player2's vectors
-		//depending on is they are black or white
+		//depending on if they are black or white
 		if (player1_in->getTeam() == "white") {
 			//if player1 is white, give them the white pieces
-			for (int i = 0; i < 2; ++i) {
-				for (int j = 0; j < 8; ++j) {
+			for (int i = 0; i < 8; ++i) {
+				for (int j = 0; j < 2; ++j) {
 					player1_in->addPiece(boardPieces[i][j]);
 				}
 			}
 			//and give player2 black
 			for (int i = 8; i > 6; --i) {
 				for (int j = 0; j < 8; ++j) {
-					player2_in->addPiece(boardPieces[i][j]);
+					player2_in->addPiece(boardPieces[j][i]);
 				}
 			}
 			nextPlayerToMove = player1_in;
 		}
 		else {
 			//otherwise, player 2 gets white
-			for (int i = 0; i < 2; ++i) {
-				for (int j = 0; j < 8; ++j) {
+			for (int i = 0; i < 8; ++i) {
+				for (int j = 0; j < 2; ++j) {
 					player2_in->addPiece(boardPieces[i][j]);
 				}
 			}
 			//and player1 gets black
 			for (int i = 8; i > 6; --i) {
 				for (int j = 0; j < 8; ++j) {
-					player1_in->addPiece(boardPieces[i][j]);
+					player1_in->addPiece(boardPieces[j][i]);
 				}
 			}
 			nextPlayerToMove = player2_in;
@@ -163,26 +163,33 @@ public:
 		for (int r = 0; r < 8; ++r) {
 			for (int c = 0; c < 8; ++c) {
 				Piece* piece = board_in->boardPieces[r][c];
-				std::string location = piece->getLocation().first + std::to_string(piece->getLocation().second);
-				
-				if (piece->getAbbr() == "P") {
-					this->boardPieces[r][c] = new Pawn(location, piece->getTeam());
+
+				if (piece != nullptr) {
+					std::string location = char(piece->getLocation().first) + std::to_string(piece->getLocation().second);
+
+					if (piece->getAbbr() == "P") {
+						this->boardPieces[r][c] = new Pawn(location, piece->getTeam());
+					}
+					else if (piece->getAbbr() == "N") {
+						this->boardPieces[r][c] = new Knight(location, piece->getTeam());
+					}
+					else if (piece->getAbbr() == "B") {
+						this->boardPieces[r][c] = new Bishop(location, piece->getTeam());
+					}
+					else if (piece->getAbbr() == "R") {
+						this->boardPieces[r][c] = new Rook(location, piece->getTeam());
+					}
+					else if (piece->getAbbr() == "Q") {
+						this->boardPieces[r][c] = new Queen(location, piece->getTeam());
+					}
+					else if (piece->getAbbr() == "K") {
+						this->boardPieces[r][c] = new King(location, piece->getTeam());
+					}
 				}
-				else if (piece->getAbbr() == "N") {
-					this->boardPieces[r][c] = new Knight(location, piece->getTeam());
+				else {
+					this->boardPieces[r][c] = nullptr;
 				}
-				else if (piece->getAbbr() == "B") {
-					this->boardPieces[r][c] = new Bishop(location, piece->getTeam());
-				}
-				else if (piece->getAbbr() == "R") {
-					this->boardPieces[r][c] = new Rook(location, piece->getTeam());
-				}
-				else if (piece->getAbbr() == "Q") {
-					this->boardPieces[r][c] = new Queen(location, piece->getTeam());
-				}
-				else if (piece->getAbbr() == "K") {
-					this->boardPieces[r][c] = new King(location, piece->getTeam());
-				}
+
 			}
 		}
 	}
@@ -321,16 +328,11 @@ public:
 		//to return true, all pieces must not be able to get the player out of check
 
 		//!!!!loop through ALL moves for ALL pieces in here!!!!
-		for (auto i = player_in->pieces.begin(); i < player_in->pieces.end(); ++i) {
+		//this is costly
+		for (Piece* piece : player_in->pieces) {
 			
 			//get the string form of the start location of the piece
-
-
-			//THIS IS CAUSING A BAD ALLOC
-			std::string piece_start = (*i)->getLocation().first + std::to_string((*i)->getLocation().second);
-			//THIS IS CAUSING A BAD ALLOC
-
-
+			std::string piece_start = char(piece->getLocation().first) + std::to_string(piece->getLocation().second);
 
 			for (char r = 'a'; r < 'i'; ++r) {
 				for (int c = 0; c < 8; ++c) {
@@ -428,7 +430,7 @@ public:
 	}
 
 	//destructor
-	~ Board() {
+	~Board() {
 		for (int r = 0; r < 8; ++r) {
 			for (int c = 0; c < 8; ++c) {
 				if (boardPieces[r][c] != nullptr) { 

@@ -41,27 +41,37 @@ public:
 
 	virtual void makeMove(std::string piece_start_loc, std::string piece_destination) = 0;
 
-	virtual void addPiece(Piece* piece_in) {
+	void addPiece(Piece* piece_in) {
 		pieces.push_back(piece_in);
 	}
 
-	virtual void removePiece(std::string location) = 0;
+	//removes the piece from the pieces vector
+	void removePiece(std::string location) {
+		Piece* piecePtr = findByLocation(location);
+		delete piecePtr;
+		piecePtr = nullptr;
+	}
 
-	virtual ~Player() {}
+	~Player() {
+		//delete every dynamically allocated piece in the pieces vector
+		for (int i = 0; i < int(pieces.size()); ++i) {
+			delete pieces[i];
+		}
+	}
 
-	virtual void setTeam(std::string team_in) {
+	void setTeam(std::string team_in) {
 		team = team_in;
 	}
 
-	virtual std::string getTeam() {
+	std::string getTeam() {
 		return team;
 	}
 
-	virtual void setName(std::string name_in) {
+	void setName(std::string name_in) {
 		name = name_in;
 	}
 
-	virtual std::string getName() {
+	std::string getName() {
 		return name;
 	}
 
@@ -89,18 +99,14 @@ public:
 		piece->setLocation(piece_destination);
 	}
 
-	//removes the piece from the pieces vector
-	void removePiece(std::string location) override {
-		Piece* piecePtr = findByLocation(location);
-		delete piecePtr;
-		piecePtr = nullptr;
-	}
-
 	~HumanPlayer() {
-		//delete every dynamically allocated piece in the pieces vector
+		//I don't think this is necessary since this is the code for the general player class
+
+		/*delete every dynamically allocated piece in the pieces vector
 		for (int i = 0; i < int(pieces.size()); ++i) {
 			delete pieces[i];
 		}
+		*/
 	}
 
 private:
@@ -124,18 +130,14 @@ public:
 		piece->setLocation(piece_destination);
 	}
 
-	//removes the piece from the pieces vector
-	void removePiece(std::string location) override {
-		Piece* piecePtr = findByLocation(location);
-		delete piecePtr;
-		piecePtr = nullptr;
-	}
-
 	~cpuPlayer() {
-		//delete every dynamically allocated piece in the pieces vector
+		//I don't think this is necessary since this is the code for the general player class
+
+		/*delete every dynamically allocated piece in the pieces vector
 		for (int i = 0; i < int(pieces.size()); ++i) {
 			delete pieces[i];
 		}
+		*/
 	}
 
 private:

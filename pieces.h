@@ -50,7 +50,7 @@ class Piece {
 public:
 
 	Piece(std::string abbr_in, int points_in, std::string location_in, std::string team_in) 
-		: location({ location_in[0], int(location_in[1]) }), abbreviation(abbr_in), points(points_in), team(team_in) {
+		: location({ (location_in[0]), (location_in[1] - 48) }), abbreviation(abbr_in), points(points_in), team(team_in) {
 	}
 
 	virtual bool validMove(std::string destination ,std::string team) = 0;

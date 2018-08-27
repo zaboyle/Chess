@@ -1,7 +1,4 @@
-﻿  player.cpp
-  pieces.cpp
-  board.cpp
-  Generating Code...
+﻿  board.cpp
   main.cpp
 main.cpp(97): warning C4566: character represented by universal-character-name '\u2659' cannot be represented in the current code page (1252)
 main.cpp(97): warning C4566: character represented by universal-character-name '\u2658' cannot be represented in the current code page (1252)
