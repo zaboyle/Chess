@@ -272,6 +272,8 @@ public:
 		else { otherPlayer = player1; }
 
 		player_in->makeMove(piece_start_pos, piece_destination);
+		//set the spot where the piece just was to null
+		boardPieces[piece_start_pos[0] - 97][piece_start_pos[1] - 48] = nullptr;
 
 		//remove the piece from the player's pieces if it is being taken
 		if (this->isPieceAtLoc(piece_destination)) {
@@ -305,7 +307,7 @@ public:
 		return false;
 	}
 
-	//returns true if the 
+	//returns true if the move results in the player being in check
 	bool moveResultsInCheck(Player* player, std::string piece_start_pos, std::string piece_destination) {
 		Board testBoard(this);
 		//now we have a board that is a copy of the current board
@@ -335,10 +337,10 @@ public:
 			std::string piece_start = char(piece->getLocation().first) + std::to_string(piece->getLocation().second);
 
 			for (char r = 'a'; r < 'i'; ++r) {
-				for (int c = 0; c < 8; ++c) {
+				for (int c = 1; c < 9; ++c) {
 					//create string of the possible move location for each piece
 					std::string possible_move_loc = r + std::to_string(c);
-					//now the string should have values between [a-h][0-7]
+					//now the string should have values between [a-h][1-8]
 
 					if (this->legalMove(player_in, piece_start, possible_move_loc)) { return false; }
 				}

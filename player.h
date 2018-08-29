@@ -21,7 +21,8 @@ class Player {
 
 public:
 
-	//MAY NOT NEED THIS//
+	//finds the player's piece at the given destination. If
+	//the player does not own a piece at that location, returns nullptr
 	virtual Piece* findByLocation(std::string location) {
 		std::pair<char, int> position = {location[0], (location[1] - 48)};
 		for (Piece* p : pieces) {
@@ -52,10 +53,10 @@ public:
 		piecePtr = nullptr;
 	}
 
-	~Player() {
+	~ Player() {
 		//delete every dynamically allocated piece in the pieces vector
-		for (int i = 0; i < int(pieces.size()); ++i) {
-			delete pieces[i];
+		while (!pieces.empty()) {
+			pieces.pop_back();
 		}
 	}
 
