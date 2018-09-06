@@ -156,9 +156,30 @@ public:
 
 	//board copy ctor
 	Board(Board* board_in) {
-		this->player1 = board_in->player1;
-		this->player2 = board_in->player2;
-		this->nextPlayerToMove = board_in->nextPlayerToMove;
+		//these pointers are shallow copies and are therefore deleted when the function
+		//ends (because the delete follows the pointer). Need a player copy ctor
+
+		//DEEP COPIES
+		if (board_in->player1->getName() == "cpu") {
+			cpuPlayer player1(board_in->player1);
+			this->player1 = &player1;
+		}
+		else {
+			HumanPlayer player1(board_in->player1);
+			this->player1 = &player1;
+		}
+
+		if (board_in->player2->getName() == "cpu") {
+			cpuPlayer player2(board_in->player1);
+			this->player2 = &player2;
+		}
+		else {
+			HumanPlayer player2(board_in->player1);
+			this->player2 = &player2;
+		}
+
+		//this should be fine as a shallow copy, but im going to remove this line because it shouldnt be needed in this function
+		//this->nextPlayerToMove = board_in->nextPlayerToMove;
 
 		for (int r = 0; r < 8; ++r) {
 			for (int c = 0; c < 8; ++c) {

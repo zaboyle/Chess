@@ -48,9 +48,14 @@ on the board for easier distinciton (see 183 projects for help)
 class Piece {
 
 public:
+	
 
 	Piece(std::string abbr_in, int points_in, std::string location_in, std::string team_in) 
 		: location({ (location_in[0]), (location_in[1] - 48) }), abbreviation(abbr_in), points(points_in), team(team_in) {
+	}
+
+	Piece(std::string abbr_in, int points_in, std::pair<char, int> location_in, std::string team_in)
+		: location(location_in), abbreviation(abbr_in), points(points_in), team(team_in) {
 	}
 
 	virtual bool validMove(std::string destination ,std::string team) = 0;
@@ -83,8 +88,16 @@ public:
 		location.second = int(location_in[1]);
 	}
 
+	void setLocation(std::pair<char, int> location_in) {
+		location = location_in;
+	}
+
 	std::string getTeam() {
 		return team;
+	}
+
+	void setTeam(std::string team_in) {
+		team = team_in;
 	}
 
 	//returns true if the piece can take an opponent's piece located at destination. 
@@ -114,6 +127,11 @@ private:
 
 class Pawn : public Piece {
 public:
+
+	//pawn copy ctor
+	Pawn(Pawn* piece_in) : Piece("P", 1, piece_in->getLocation(), piece_in->getTeam()) {
+	}
+
 	Pawn(std::string location_in, std::string team_in) : Piece("P", 1, location_in, team_in) {
 	}
 
@@ -210,6 +228,10 @@ class Knight : public Piece {
 public:
 	Knight(std::string location_in, std::string team_in) : Piece("N", 3, location_in, team_in) {}
 
+	//knight copy ctor
+	Knight(Knight* piece_in) : Piece("N", 3, piece_in->getLocation(), piece_in->getTeam()) {
+	}
+
 	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
 
@@ -239,6 +261,10 @@ class Bishop : public Piece {
 public:
 	Bishop(std::string location_in, std::string team_in) : Piece("B", 3, location_in, team_in) {}
 
+	//copy ctor
+	Bishop(Bishop* piece_in) : Piece("B", 3, piece_in->getLocation(), piece_in->getTeam()) {
+	}
+
 	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
 
@@ -257,6 +283,9 @@ class Rook : public Piece {
 public:
 	Rook(std::string location_in, std::string team_in) : Piece("R", 5, location_in, team_in) {}
 
+	Rook(Rook* piece_in) : Piece("R", 5, piece_in->getLocation(), piece_in->getTeam()) {
+	}
+
 	bool validMove(std::string destination, std::string team) override {
 		std::pair<char, int> loc = getLocation();
 
@@ -274,6 +303,10 @@ private:
 class Queen : public Piece {
 public:
 	Queen(std::string location_in, std::string team_in) : Piece("Q", 9, location_in, team_in) {}
+
+	//copy ctor
+	Queen(Queen* piece_in) : Piece("Q", 9, piece_in->getLocation(), piece_in->getTeam()) {
+	}
 
 	bool validMove(std::string destination, std::string team) override { 
 		std::pair<char, int> loc = getLocation();
@@ -295,6 +328,10 @@ private:
 class King : public Piece {
 public:
 	King(std::string location_in, std::string team_in) : Piece("K", 0, location_in, team_in) {}
+
+	//copy ctor
+	King(King* piece_in) : Piece("K", 0, piece_in->getLocation(), piece_in->getTeam()) {
+	}
 
 	bool validMove(std::string destination, std::string team) override { 
 		std::pair<char, int> loc = getLocation();

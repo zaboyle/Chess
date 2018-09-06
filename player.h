@@ -21,6 +21,9 @@ class Player {
 
 public:
 
+	Player(std::string name_in, std::string team_in) : name(name_in), team(team_in) {
+	}
+
 	//finds the player's piece at the given destination. If
 	//the player does not own a piece at that location, returns nullptr
 	virtual Piece* findByLocation(std::string location) {
@@ -76,8 +79,8 @@ public:
 		return name;
 	}
 
-
-protected:
+//removed this because of difficulties in copy ctors
+//protected:
 	std::vector<Piece*> pieces;
 
 private:
@@ -89,9 +92,37 @@ class HumanPlayer : public Player {
 	friend class Board;
 public:
 
-	HumanPlayer(std::string name_in, std::string team_in) {
-		setName(name_in);
-		setTeam(team_in);
+	HumanPlayer(std::string name_in, std::string team_in) : Player(name_in, team_in) {
+	}
+
+	//copy ctor
+	HumanPlayer(Player* player_in) : Player(player_in->getName(), player_in->getTeam()) {
+		for (Piece* p : player_in->pieces) {
+			if (p->getAbbr() == "P") {
+				Piece* pawn(p);
+				this->pieces.push_back(pawn);
+			}
+			else if (p->getAbbr() == "N") {
+				Piece* knight(p);
+				this->pieces.push_back(knight);
+			}
+			else if (p->getAbbr() == "B") {
+				Piece* bishop(p);
+				this->pieces.push_back(bishop);
+			}
+			else if (p->getAbbr() == "R") {
+				Piece* rook(p);
+				this->pieces.push_back(rook);
+			}
+			else if (p->getAbbr() == "Q") {
+				Piece* queen(p);
+				this->pieces.push_back(queen);
+			}
+			else if (p->getAbbr() == "K") {
+				Piece* king(p);
+				this->pieces.push_back(king);
+			}
+		}
 	}
 
 	//changes the location of the desired piece to the given destination
@@ -118,10 +149,36 @@ class cpuPlayer : public Player {
 	friend class Board;
 public:
 
-	cpuPlayer(std::string team_in) {
-		setName("cpu");
-		setTeam(team_in);
-		//push back standard set of starting pieces for given team
+	cpuPlayer(std::string team_in) : Player("cpu", team_in) {
+	}
+
+	cpuPlayer(Player* player_in) : Player(player_in->getName(), player_in->getTeam()) {
+		for (Piece* p : player_in->pieces) {
+			if (p->getAbbr() == "P") {
+				Piece* pawn(p);
+				this->pieces.push_back(pawn);
+			}
+			else if (p->getAbbr() == "N") {
+				Piece* knight(p);
+				this->pieces.push_back(knight);
+			}
+			else if (p->getAbbr() == "B") {
+				Piece* bishop(p);
+				this->pieces.push_back(bishop);
+			}
+			else if (p->getAbbr() == "R") {
+				Piece* rook(p);
+				this->pieces.push_back(rook);
+			}
+			else if (p->getAbbr() == "Q") {
+				Piece* queen(p);
+				this->pieces.push_back(queen);
+			}
+			else if (p->getAbbr() == "K") {
+				Piece* king(p);
+				this->pieces.push_back(king);
+			}
+		}
 	}
 
 	//*****Need to create a function to figure out which piece to
