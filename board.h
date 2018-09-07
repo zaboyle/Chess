@@ -130,7 +130,7 @@ public:
 			}
 			//and give player2 black
 			for (int i = 7; i > 5; --i) {
-				for (int j = 0; j < 7; ++j) {
+				for (int j = 0; j < 8; ++j) {
 					player2_in->addPiece(boardPieces[j][i]);
 				}
 			}
@@ -145,7 +145,7 @@ public:
 			}
 			//and player1 gets black
 			for (int i = 7; i > 5; --i) {
-				for (int j = 0; j < 7; ++j) {
+				for (int j = 0; j < 8; ++j) {
 					player1_in->addPiece(boardPieces[j][i]);
 				}
 			}
@@ -161,21 +161,21 @@ public:
 
 		//DEEP COPIES
 		if (board_in->player1->getName() == "cpu") {
-			cpuPlayer player1(board_in->player1);
-			this->player1 = &player1;
+			cpuPlayer* player1 = new cpuPlayer(board_in->player1);
+			this->player1 = player1;
 		}
 		else {
-			HumanPlayer player1(board_in->player1);
-			this->player1 = &player1;
+			HumanPlayer* player1 = new HumanPlayer(board_in->player1);
+			this->player1 = player1;
 		}
 
 		if (board_in->player2->getName() == "cpu") {
-			cpuPlayer player2(board_in->player1);
-			this->player2 = &player2;
+			cpuPlayer* player2 = new cpuPlayer(board_in->player2);
+			this->player2 = player2;
 		}
 		else {
-			HumanPlayer player2(board_in->player1);
-			this->player2 = &player2;
+			HumanPlayer* player2 = new HumanPlayer(board_in->player2);
+			this->player2 = player2;
 		}
 
 		//this should be fine as a shallow copy, but im going to remove this line because it shouldnt be needed in this function
