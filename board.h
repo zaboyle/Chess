@@ -129,8 +129,8 @@ public:
 				}
 			}
 			//and give player2 black
-			for (int i = 8; i > 6; --i) {
-				for (int j = 0; j < 8; ++j) {
+			for (int i = 7; i > 5; --i) {
+				for (int j = 0; j < 7; ++j) {
 					player2_in->addPiece(boardPieces[j][i]);
 				}
 			}
@@ -144,8 +144,8 @@ public:
 				}
 			}
 			//and player1 gets black
-			for (int i = 8; i > 6; --i) {
-				for (int j = 0; j < 8; ++j) {
+			for (int i = 7; i > 5; --i) {
+				for (int j = 0; j < 7; ++j) {
 					player1_in->addPiece(boardPieces[j][i]);
 				}
 			}
@@ -221,6 +221,11 @@ public:
 	}
 
 	bool isPieceInTheWay(Piece* piece, std::string destination) {
+		/*
+		IMPLEMENT!!!!!
+		*/
+
+
 		//needed for all pieces except knights
 		//iterate between all x and y values that are hit
 

@@ -123,6 +123,10 @@ public:
 				this->pieces.push_back(king);
 			}
 		}
+		/*
+		this->setName(player_in->getName());
+		this->setTeam(player_in->getTeam());
+		*/
 	}
 
 	//changes the location of the desired piece to the given destination
@@ -179,6 +183,7 @@ public:
 				this->pieces.push_back(king);
 			}
 		}
+		//this->setTeam(player_in->getTeam());
 	}
 
 	//*****Need to create a function to figure out which piece to
