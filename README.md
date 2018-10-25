@@ -1,3 +1,3 @@
-Chess in C++
+Chess (C++)
 ===========================
-By Zachary Boyle <zboyle@umich.edu>
+* By Zachary Boyle <zboyle@umich.edu>
