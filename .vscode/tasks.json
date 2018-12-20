@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build main.exe",
+			"type": "shell",
+			"command": "C:/MinGW-CPTR-124/bin/g++.exe",
+			"args": [
+				"-g",
+				"main.cpp",
+				"-o",
+				"main.exe"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": "$msCompile"
+		}
+	]
+}

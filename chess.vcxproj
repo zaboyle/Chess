@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="pieces.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>

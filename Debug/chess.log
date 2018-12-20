@@ -1,16 +1,8 @@
 ﻿  board.cpp
+  Generating Code...
+  Compiling...
+  player.cpp
+  pieces.cpp
+  Generating Code...
   main.cpp
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2659' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2658' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2657' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2656' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2655' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u2654' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265A' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265B' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265C' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265D' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265E' cannot be represented in the current code page (1252)
-main.cpp(97): warning C4566: character represented by universal-character-name '\u265F' cannot be represented in the current code page (1252)
-c:\users\zaboy\desktop\freetime_programming\chess\c++\player.h(44): warning C4715: 'Player::getKing': not all control paths return a value
   chess.vcxproj -> C:\Users\zaboy\Desktop\freetime_programming\Chess\C++\Debug\chess.exe
