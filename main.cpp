@@ -4,8 +4,7 @@ CHESS
 
 Zach Boyle
 zboyle@umich.edu
-4/24/2018
-
+12/20/2018
 
 ////MAKE 'GAME' ADT////
 generic game functionalities:
