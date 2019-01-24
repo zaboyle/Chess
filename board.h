@@ -78,6 +78,9 @@ public:
 
 		//fill the rest with nullptrs in case they arent already
 		for(int i = 0; i < 8; ++i) {
+			//also fill that blank line in with nullptrs
+			board[i][0] = nullptr;
+			
 			board[i][3] = nullptr;
 			board[i][4] = nullptr;
 			board[i][5] = nullptr;

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "board.h"
 #include "player.h"
+#include "termcolor.hpp"
 
 class Game {
 
@@ -45,6 +46,11 @@ class Game {
         //         or one loaded from a file
         void play() {
             //TODO
+
+            
+
+            //at the end of each turn
+            printBoard(std::cout);
         }
 
         //destructor
@@ -215,6 +221,7 @@ class Game {
 
         //Requires: the choice was to play a new game
         //Modifies: players names and types
+        //Effects: sets the players' names, who goes first, and teams
         void setPlayers() {
             //Player1 setup
             std::string name;
